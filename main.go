@@ -2,15 +2,16 @@ package main
 // try not to change the comments below:
 
 
-//#cgo pkg-config: opencv
+//#cgo pkg-config: opencv 
+// #cgo LDFLAGS: -lcurl
 // #include "grab.hxx"
 import "C"
 
 import (
    
     // "github.com/gorilla/websocket"
-    // "net/http"
-  
+    "net/http"
+  "strconv"
     "fmt"
     // "io/ioutil"
 );
@@ -23,7 +24,31 @@ import (
 
 func main() {
    
-fmt.Println("I'm go and just got an int form c++: ",C.foregroundDetection(C.int(78),C.int(50),C.int(20),C.int(150),C.int(2000)))
+http.HandleFunc("/",func(w http.ResponseWriter,r *http.Request){
+if(r.Method=="POST")    {
+
+ x,errx:=strconv.ParseInt(r.FormValue("x"),10,32)
+ y,erry:=strconv.ParseInt(r.FormValue("y"),10,32)
+ width,errw:=strconv.ParseInt(r.FormValue("width"),10,32)
+ height,errh:=strconv.ParseInt(r.FormValue("height"),10,32)
+img_url := r.FormValue("img_url")
+if errx!=nil || erry !=nil || errw!=nil || errh!=nil{
+    fmt.Println("error converting string to int")
+}
+ fmt.Println("this is x:",x," ",y," ",width," ",height) 
+
+
+
+ fmt.Println("I'm go and just got an int form c++: ",C.foregroundDetection(C.CString(img_url),C.int(x),C.int(y),C.int(width),C.int(height)))
+
+
+
+}
+fmt.Println("salam")
+})
+
+
+
 // http.HandleFunc("/",func(w http.ResponseWriter,r *http.Request){
 
    
@@ -136,7 +161,7 @@ fmt.Println("I'm go and just got an int form c++: ",C.foregroundDetection(C.int(
 // })
 
 
-//         http.ListenAndServe(":3000", nil)
+         http.ListenAndServe(":3000", nil)
 
 
 

@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-int foregroundDetection(int img_file,int x,int y,int width,int height);
+int foregroundDetection(const char * img_url,int x,int y,int width,int height);
 
 #ifdef __cplusplus
 }
