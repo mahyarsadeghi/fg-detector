@@ -67,12 +67,6 @@ return foreGround;
 
 
 int  foregroundDetection(const char  * img_url,int x,int y,int width,int height){
-// const char * c= img_url.c_str();
-
-// if(f.empty()){
-// cout<<"File name is empty";
-// return 0;
-// }
 
 
 cout<<"hi...im c++: "<<img_url<<endl;
