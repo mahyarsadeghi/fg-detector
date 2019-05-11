@@ -1,4 +1,6 @@
 #include<iostream>
+#include <sys/stat.h>
+ #include <time.h>
 #include "grab.hxx"
 #include<opencv4/opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -66,10 +68,43 @@ return foreGround;
 }
 
 
+void createDirectory(const char * pathname){
+
+
+    if(mkdir(pathname,0777)==-1){
+      cout<< "cannot create the directory. Check if it exists"<<endl;
+      return;
+    }
+    else{
+    cout<<"directory is created"<<endl;
+    }
+    
+}
+
+
+void saveFile(Mat & image){
+
+time_t curr_time;
+curr_time = time(NULL);
+const char *tm = ctime(&curr_time);
+string s=string(tm);
+
+string imgname="images/"+s+".jpg";
+
+cout<<imgname<<endl;
+  imwrite(imgname,image);
+
+cout<<"image is saved"<<endl;
+}
+
+
+
+
+
 int  foregroundDetection(const char  * img_url,int x,int y,int width,int height){
 
 
-cout<<"hi...im c++: "<<img_url<<endl;
+cout<<"hi...I'm c++: "<<endl;
 
 
 Mat image=curlImg(img_url);
@@ -81,10 +116,16 @@ if(image.empty())
 }
 
 Mat result=grabCutSegmentation(image,x,y,width,height);
-imshow("the real image",image);
-waitKey(0);
-imshow("result",result);
-waitKey(0);
+// imshow("the real image",image);
+// waitKey(0);
+// imshow("result",result);
+// waitKey(0);
+
+createDirectory("images");
+saveFile(result);
+
+  
+
 
 
 return 2;
